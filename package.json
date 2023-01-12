@@ -1,0 +1,46 @@
+{
+  "dependencies": {
+    "@popperjs/core": "^2.11.6",
+    "bootstrap": "^5.3.0-alpha1",
+    "lodash": "^4.17.21"
+  },
+  "name": "@hexlet/code",
+  "description": "[![Actions Status](https://github.com/Murat72/frontend-project-11/workflows/hexlet-check/badge.svg)](https://github.com/Murat72/frontend-project-11/actions)",
+  "version": "1.0.0",
+  "private": true,
+  "devDependencies": {
+    "@babel/core": "^7.20.12",
+    "@babel/eslint-parser": "^7.15.4",
+    "@babel/preset-env": "^7.20.2",
+    "autoprefixer": "^10.4.13",
+    "babel-jest": "^27.1.1",
+    "babel-loader": "^8.3.0",
+    "css-loader": "^6.7.3",
+    "eslint": "^8.31.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "html-webpack-plugin": "^5.5.0",
+    "postcss": "^8.4.21",
+    "postcss-loader": "^7.0.2",
+    "sass": "^1.57.1",
+    "sass-loader": "^13.2.0",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1",
+    "webpack-dev-server": "^4.11.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Murat72/frontend-project-11.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Murat72/frontend-project-11/issues"
+  },
+  "homepage": "https://github.com/Murat72/frontend-project-11#readme"
+}
