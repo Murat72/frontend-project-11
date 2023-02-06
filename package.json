@@ -1,8 +1,12 @@
 {
   "dependencies": {
     "@popperjs/core": "^2.11.6",
+    "axios": "^1.3.1",
     "bootstrap": "^5.3.0-alpha1",
-    "lodash": "^4.17.21"
+    "i18next": "^22.4.9",
+    "lodash": "^4.17.21",
+    "on-change": "^4.0.2",
+    "yup": "^0.32.11"
   },
   "name": "@hexlet/code",
   "description": "[![Actions Status](https://github.com/Murat72/frontend-project-11/workflows/hexlet-check/badge.svg)](https://github.com/Murat72/frontend-project-11/actions)",
