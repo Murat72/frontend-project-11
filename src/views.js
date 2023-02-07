@@ -3,7 +3,6 @@ import _ from 'lodash';
 
 
 const renderError = (error, elements, i18next) => {
-  console.log('renderError');
   elements.feedBack.textContent = '';
   if (error) {
     elements.feedBack.classList.remove('text-success');
@@ -13,7 +12,6 @@ const renderError = (error, elements, i18next) => {
 };
 
 const showValid = (value, elements) => {
-  console.log('showValid');
   if (!value) {
     elements.inputEl.classList.add('is-invalid');
     return;
@@ -104,17 +102,14 @@ const renderPosts = (state, elements) => {
 const handleProcessState = (state,processState, elements, i18next) => {
   switch (processState) {
     case 'filling':
-      console.log('filing');
       break;
     case 'sending':
-      console.log('sending');
       elements.formEl.reset();
       elements.inputEl.focus();
       elements.inputEl.classList.remove('is-invalid');
       elements.feedBack.classList.remove('text-danger');
       break;
     case 'loaded':
-      console.log('loaded');
       elements.formEl.reset();
       elements.inputEl.focus();
       elements.inputEl.classList.remove('is-invalid');
@@ -128,9 +123,6 @@ const handleProcessState = (state,processState, elements, i18next) => {
 };
 
 export default (state, elements, i18next) => onChange(state, (path, value) => {
-  console.log('render');
-  console.log(path);
-  console.log(`value ${value}`);
   switch (path) {
     case 'formProcess.processError':
       renderError(value, elements, i18next);

@@ -1,9 +1,11 @@
 import * as yup from 'yup';
 import i18n from 'i18next';
 import ru from './locales/ru.js';
-import axios from 'axios';
 import render from './views.js';
+import getRss from './getRss.js';
 import parse from './parser.js';
+import update from './update.js';
+import uniqueId from 'lodash/uniqueId.js';
 
 const validateUrl = async (url, existedUrls, i18nInstance) => {
   yup.setLocale({
@@ -27,9 +29,6 @@ const validateUrl = async (url, existedUrls, i18nInstance) => {
     .catch((error) => {
       throw error;
     });
-};
-const getRss = (url) => {
-  return axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${url}`)
 };
 
 export default async () => {
@@ -62,7 +61,7 @@ export default async () => {
   };
 
   const watchedState = render(initialState, elements, i18nInstance);
-  const existedUrls = [];
+  update(watchedState);
   elements.formEl.addEventListener('submit', (e) => {
     e.preventDefault();
     const url = elements.inputEl.value;
@@ -77,11 +76,12 @@ export default async () => {
       })
       .then((rss) => {
         const [feed, posts] = parse(rss);
-        const actualFeed = {...feed, url};
+        const feedId = uniqueId();
+        const actualFeed = {id: feedId, url, ...feed};
+        const actualPosts = posts.map((post) => ({id: uniqueId, feedId, ...post}));
         watchedState.formProcess.processState = 'loaded';
         watchedState.feeds = [actualFeed, ...watchedState.feeds];
-        console.log(initialState.feeds);
-        watchedState.posts = [...posts, ...watchedState.posts];
+        watchedState.posts = [...actualPosts, ...watchedState.posts];
       })
       .catch((error) => {
         console.log(error);
