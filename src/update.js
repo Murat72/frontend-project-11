@@ -14,7 +14,9 @@ export default (watchedState) => {
             const feedId = _.find(watchedState.feeds, (item) => item.url === actualFeed.url).id;
             const actualPosts = posts.map((post) => ({id: _.uniqueId(), feedId, ...post}));
             const diffPosts = _.differenceBy(actualPosts, Array.from(watchedState.posts), 'title');
-            watchedState.posts = [...diffPosts, ...watchedState.posts];
+            if(diffPosts.length !== 0) {
+              watchedState.posts = [...diffPosts, ...watchedState.posts];
+            }
           })
       });
     }

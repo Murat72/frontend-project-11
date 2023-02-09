@@ -49,6 +49,10 @@ export default async () => {
     },
     posts: [],
     feeds: [],
+    ui: {
+      postId: null,
+      visitedPosts: [],
+    },
   };
 
   const elements = {
@@ -58,6 +62,10 @@ export default async () => {
     feedBack: document.querySelector('.feedback'),
     feedsDiv: document.querySelector('.feeds'),
     postsDiv: document.querySelector('.posts'),
+    modalWindow: document.querySelector('#modal'),
+    modalTitle: document.querySelector('.modal-title'),
+    modalBody: document.querySelector('.modal-body'),
+    modalBtn: document.querySelector('.full-article'),
   };
 
   const watchedState = render(initialState, elements, i18nInstance);
@@ -78,7 +86,7 @@ export default async () => {
         const [feed, posts] = parse(rss);
         const feedId = uniqueId();
         const actualFeed = {id: feedId, url, ...feed};
-        const actualPosts = posts.map((post) => ({id: uniqueId, feedId, ...post}));
+        const actualPosts = posts.map((post) => ({ id: uniqueId(), feedId, ...post }));
         watchedState.formProcess.processState = 'loaded';
         watchedState.feeds = [actualFeed, ...watchedState.feeds];
         watchedState.posts = [...actualPosts, ...watchedState.posts];
@@ -98,5 +106,14 @@ export default async () => {
         }
         watchedState.formProcess.processState = 'filling';
       });
+  });
+
+  elements.modalWindow.addEventListener('show.bs.modal', (event) => {
+    console.log(event.relatedTarget);
+    const postId = event.relatedTarget.dataset.id;
+    if (initialState.ui.visitedPosts.includes(postId) === false) {
+      watchedState.ui.postId = postId;
+      initialState.ui.visitedPosts.push(postId);
+    }
   });
 };

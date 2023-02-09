@@ -53,7 +53,7 @@ const renderFeeds = (feeds, elements) => {
   })
   elements.feedsDiv.innerHTML = '';
   elements.feedsDiv.append(divCard);
-}
+};
 
 const renderPosts = (state, elements) => {
   const divCard = document.createElement('div');
@@ -76,9 +76,11 @@ const renderPosts = (state, elements) => {
     const postEl = document.createElement('li');
     postEl.setAttribute('class', 'list-group-item d-flex justify-content-between align-items-start border-0 border-end-0');
 
+    const visitedLink = state.ui.visitedPosts.includes(post.id);
+    const classLink = visitedLink ? 'fw-normal link-secondary' : 'fw-bold';
     const postLink = document.createElement('a');
     postLink.setAttribute('href', post.link);
-    postLink.setAttribute('class', 'fw-bold');
+    postLink.setAttribute('class', classLink);
     postLink.setAttribute('data-id', post.id);
     postLink.setAttribute('target', '_blank');
     postLink.setAttribute('rel', 'noopener noreferrer');
@@ -97,7 +99,17 @@ const renderPosts = (state, elements) => {
   })
   elements.postsDiv.innerHTML = '';
   elements.postsDiv.append(divCard);
-}
+};
+
+const renderModalWindow = (state, value, elements) => {
+  const post = _.find(state.posts, {id: value});
+  elements.modalTitle.textContent = post.title;
+  elements.modalBody.textContent = post.description;
+  elements.modalBtn.setAttribute('href', post.link);
+  const postEl = document.querySelector(`a[data-id="${value}"]`);
+  postEl.classList.remove('fw-bold');
+  postEl.classList.add('fw-normal', 'link-secondary');
+};
 
 const handleProcessState = (state,processState, elements, i18next) => {
   switch (processState) {
@@ -123,6 +135,7 @@ const handleProcessState = (state,processState, elements, i18next) => {
 };
 
 export default (state, elements, i18next) => onChange(state, (path, value) => {
+  console.log(value);
   switch (path) {
     case 'formProcess.processError':
       renderError(value, elements, i18next);
@@ -138,6 +151,9 @@ export default (state, elements, i18next) => onChange(state, (path, value) => {
       break;
     case 'posts':
       renderPosts(state, elements);
+      break;
+    case 'ui.postId':
+      renderModalWindow(state, value, elements);
       break;
     default:
       throw new Error(`Unknown path: ${path}`);
