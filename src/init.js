@@ -1,11 +1,11 @@
 import * as yup from 'yup';
 import i18n from 'i18next';
+import uniqueId from 'lodash/uniqueId.js';
 import ru from './locales/ru.js';
 import render from './views.js';
 import getRss from './getRss.js';
 import parse from './parser.js';
 import update from './update.js';
-import uniqueId from 'lodash/uniqueId.js';
 
 const validateUrl = async (url, existedUrls, i18nInstance) => {
   yup.setLocale({
@@ -68,49 +68,48 @@ export default async () => {
     modalBtn: document.querySelector('.full-article'),
   };
 
-  const watchedState = render(initialState, elements, i18nInstance);
-  update(watchedState);
+  const view = render(initialState, elements, i18nInstance);
+  update(view);
   elements.formEl.addEventListener('submit', (e) => {
     e.preventDefault();
     const url = elements.inputEl.value;
-    watchedState.formProcess.valid = true;
-    const urls = watchedState.feeds.map((feed) => feed.url);
+    view.formProcess.valid = true;
+    const urls = view.feeds.map((feed) => feed.url);
     console.log(urls);
     validateUrl(url, urls, i18nInstance)
       .then((url) => {
-        watchedState.formProcess.processError = null;
-        watchedState.formProcess.processState = 'sending';
+        view.formProcess.processError = null;
+        view.formProcess.processState = 'sending';
         return getRss(url);
       })
       .then((rss) => {
         const [feed, posts] = parse(rss);
         const feedId = uniqueId();
-        const actualFeed = {id: feedId, url, ...feed};
+        const actualFeed = { id: feedId, url, ...feed };
         const actualPosts = posts.map((post) => ({ id: uniqueId(), feedId, ...post }));
-        watchedState.formProcess.processState = 'loaded';
-        watchedState.feeds = [actualFeed, ...watchedState.feeds];
-        watchedState.posts = [...actualPosts, ...watchedState.posts];
+        view.formProcess.processState = 'loaded';
+        view.feeds = [actualFeed, ...view.feeds];
+        view.posts = [...actualPosts, ...view.posts];
       })
       .catch((error) => {
         console.log(error);
-        watchedState.formProcess.valid = error.name !== 'ValidationError';
+        view.formProcess.valid = error.name !== 'ValidationError';
         if (error.name === 'ValidationError') {
-          watchedState.formProcess.processError = error.message;
+          view.formProcess.processError = error.message;
           console.log(initialState.formProcess);
         } else if (error.message === 'ParseError') {
-          watchedState.formProcess.processError = i18nInstance.t('form.errors.invalidRss');
+          view.formProcess.processError = i18nInstance.t('form.errors.invalidRss');
         } else if (error.name === 'AxiosError') {
-          watchedState.formProcess.processError = 'form.errors.networkProblems';
+          view.formProcess.processError = 'form.errors.networkProblems';
         }
-        watchedState.formProcess.processState = 'filling';
+        view.formProcess.processState = 'filling';
       });
   });
 
   elements.modalWindow.addEventListener('show.bs.modal', (event) => {
-    console.log(event.relatedTarget);
     const postId = event.relatedTarget.dataset.id;
     if (initialState.ui.visitedPosts.includes(postId) === false) {
-      watchedState.ui.postId = postId;
+      view.ui.postId = postId;
       initialState.ui.visitedPosts.push(postId);
     }
   });

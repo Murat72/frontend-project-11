@@ -1,7 +1,6 @@
 import onChange from 'on-change';
 import _ from 'lodash';
 
-
 const renderError = (error, elements, i18next) => {
   elements.feedBack.textContent = '';
   if (error) {
@@ -102,7 +101,7 @@ const renderPosts = (state, elements) => {
 };
 
 const renderModalWindow = (state, value, elements) => {
-  const post = _.find(state.posts, {id: value});
+  const post = _.find(state.posts, { id: value });
   elements.modalTitle.textContent = post.title;
   elements.modalBody.textContent = post.description;
   elements.modalBtn.setAttribute('href', post.link);
