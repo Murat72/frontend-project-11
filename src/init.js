@@ -101,8 +101,6 @@ export default async () => {
           watchedState.formProcess.processError = i18nInstance.t('form.errors.invalidRss');
         } else if (error.name === 'AxiosError') {
           watchedState.formProcess.processError = 'form.errors.networkProblems';
-        } else {
-          watchedState.formProcess.processError = i18nInstance.t('form.errors.unknownError');
         }
         watchedState.formProcess.processState = 'filling';
       });
