@@ -19,7 +19,7 @@ export default (view) => {
             }
           })
       ));
-    };
+    }
     setTimeout(cb, 5000);
   };
   cb();

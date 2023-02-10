@@ -77,10 +77,10 @@ export default async () => {
     const urls = view.feeds.map((feed) => feed.url);
     console.log(urls);
     validateUrl(url, urls, i18nInstance)
-      .then((url) => {
+      .then((result) => {
         view.formProcess.processError = null;
         view.formProcess.processState = 'sending';
-        return getRss(url);
+        return getRss(result);
       })
       .then((rss) => {
         const [feed, posts] = parse(rss);

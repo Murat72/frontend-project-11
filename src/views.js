@@ -49,7 +49,7 @@ const renderFeeds = (feeds, elements) => {
     feedDescription.textContent = feed.description;
     feedEl.append(feedDescription);
     feedsList.append(feedEl);
-  })
+  });
   elements.feedsDiv.innerHTML = '';
   elements.feedsDiv.append(divCard);
 };
@@ -95,7 +95,7 @@ const renderPosts = (state, elements) => {
 
     postEl.append(postLink, buttonEl);
     postsList.append(postEl);
-  })
+  });
   elements.postsDiv.innerHTML = '';
   elements.postsDiv.append(divCard);
 };
@@ -110,7 +110,7 @@ const renderModalWindow = (state, value, elements) => {
   postEl.classList.add('fw-normal', 'link-secondary');
 };
 
-const handleProcessState = (state,processState, elements, i18next) => {
+const handleProcessState = (state, processState, elements, i18next) => {
   switch (processState) {
     case 'filling':
       break;
