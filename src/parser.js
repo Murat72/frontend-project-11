@@ -16,7 +16,6 @@ export default (rss) => {
         description: item.querySelector('description').textContent,
         link: item.querySelector('link').textContent,
       }));
-      
     return { feed, posts };
   }
 };

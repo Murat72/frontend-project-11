@@ -16,7 +16,8 @@ const update = (watchedState) => {
           if (diffPosts.length !== 0) {
             watchedState.posts = [...diffPosts, ...watchedState.posts];
           }
-        })
+        }),
+
       );
       Promise.all(promises).finally(() => setTimeout(update(watchedState), 5000));
     }
