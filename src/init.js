@@ -72,7 +72,7 @@ export default async () => {
     modalBtn: document.querySelector('.full-article'),
   };
 
-  elements.titlesEls.forEach((title) => (title.textContent = i18nInstance.t('form.title')));
+  elements.titlesEls.forEach((title) => {title.textContent = i18nInstance.t('form.title')});
   elements.leadEl.textContent = i18nInstance.t('form.lead');
   elements.mutedTextEl.textContent = i18nInstance.t('form.mutedText');
   elements.labelUrlInput.textContent = i18nInstance.t('form.label');

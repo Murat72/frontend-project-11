@@ -2,7 +2,7 @@ import _ from 'lodash';
 import getRss from './getRss.js';
 import parse from './parser.js';
 
-const update = (watchedState) => {
+export default (watchedState) => {
   const cb = () => {
     const urls = watchedState.feeds.map((feed) => feed.url);
     if (!_.isEmpty(urls)) {
@@ -17,12 +17,9 @@ const update = (watchedState) => {
             watchedState.posts = [...diffPosts, ...watchedState.posts];
           }
         }),
-
       );
-      Promise.all(promises).finally(() => setTimeout(update(watchedState), 5000));
+      Promise.all(promises).finally(() => setTimeout(cb, 5000));
     }
   };
   setTimeout(cb, 5000);
 };
-
-export default update;
