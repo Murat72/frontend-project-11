@@ -1,12 +1,12 @@
 import onChange from 'on-change';
 import _ from 'lodash';
 
-const renderError = (error, elements, i18next) => {
+const renderError = (error, elements, i18n) => {
   elements.feedBack.textContent = '';
   if (error) {
     elements.feedBack.classList.remove('text-success');
     elements.feedBack.classList.add('text-danger');
-    elements.feedBack.textContent = i18next.t(error);
+    elements.feedBack.textContent = i18n.t(error);
   }
 };
 
@@ -18,7 +18,7 @@ const showValid = (value, elements) => {
   elements.inputEl.classList.remove('is-invalid');
 };
 
-const renderFeeds = (feeds, elements) => {
+const renderFeeds = (feeds, elements, i18n) => {
   const divCard = document.createElement('div');
   divCard.setAttribute('class', 'card border-0');
 
@@ -28,7 +28,7 @@ const renderFeeds = (feeds, elements) => {
 
   const headerFeed = document.createElement('h2');
   headerFeed.setAttribute('class', 'card-title h4');
-  headerFeed.textContent = 'Фиды';
+  headerFeed.textContent = i18n.t('form.feeds');
   divCardBody.append(headerFeed);
 
   const feedsList = document.createElement('ul');
@@ -54,7 +54,7 @@ const renderFeeds = (feeds, elements) => {
   elements.feedsDiv.append(divCard);
 };
 
-const renderPosts = (state, elements) => {
+const renderPosts = (state, elements, i18n) => {
   const divCard = document.createElement('div');
   divCard.setAttribute('class', 'card border-0');
 
@@ -64,7 +64,7 @@ const renderPosts = (state, elements) => {
 
   const headerPosts = document.createElement('h2');
   headerPosts.setAttribute('class', 'card-title h4');
-  headerPosts.textContent = 'Посты';
+  headerPosts.textContent = i18n.t('form.posts');
   divCardBody.append(headerPosts);
 
   const postsList = document.createElement('ul');
@@ -91,7 +91,7 @@ const renderPosts = (state, elements) => {
     buttonEl.setAttribute('data-id', post.id);
     buttonEl.setAttribute('data-bs-toggle', 'modal');
     buttonEl.setAttribute('data-bs-target', '#modal');
-    buttonEl.textContent = 'Просмотр';
+    buttonEl.textContent = i18n.t('form.buttons.viewButton');
 
     postEl.append(postLink, buttonEl);
     postsList.append(postEl);
@@ -110,7 +110,7 @@ const renderModalWindow = (state, value, elements) => {
   postEl.classList.add('fw-normal', 'link-secondary');
 };
 
-const handleProcessState = (state, processState, elements, i18next) => {
+const handleProcessState = (state, processState, elements, i18n) => {
   switch (processState) {
     case 'filling':
       break;
@@ -126,30 +126,29 @@ const handleProcessState = (state, processState, elements, i18next) => {
       elements.inputEl.classList.remove('is-invalid');
       elements.feedBack.classList.remove('text-danger');
       elements.feedBack.classList.add('text-success');
-      elements.feedBack.textContent = i18next.t('form.loaded');
+      elements.feedBack.textContent = i18n.t('form.loaded');
       break;
     default:
       throw new Error(`Unknown process state: ${processState}`);
   }
 };
 
-export default (state, elements, i18next) => onChange(state, (path, value) => {
-  console.log(value);
+export default (state, elements, i18n) => onChange(state, (path, value) => {
   switch (path) {
     case 'formProcess.processError':
-      renderError(value, elements, i18next);
+      renderError(value, elements, i18n);
       break;
     case 'formProcess.valid':
       showValid(value, elements);
       break;
     case 'formProcess.processState':
-      handleProcessState(state, value, elements, i18next);
+      handleProcessState(state, value, elements, i18n);
       break;
     case 'feeds':
-      renderFeeds(value, elements);
+      renderFeeds(value, elements, i18n);
       break;
     case 'posts':
-      renderPosts(state, elements);
+      renderPosts(state, elements, i18n);
       break;
     case 'ui.postId':
       renderModalWindow(state, value, elements);
