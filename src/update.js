@@ -16,8 +16,7 @@ export default (watchedState) => {
           if (diffPosts.length !== 0) {
             watchedState.posts = [...diffPosts, ...watchedState.posts];
           }
-        }),
-      );
+        }));
       Promise.all(promises).finally(() => setTimeout(cb, 5000));
     }
   };
