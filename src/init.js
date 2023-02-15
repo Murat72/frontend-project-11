@@ -77,17 +77,18 @@ export default async () => {
   elements.mutedTextEl.textContent = i18nInstance.t('form.mutedText');
   elements.labelUrlInput.textContent = i18nInstance.t('form.label');
   elements.addEl.textContent = i18nInstance.t('form.buttons.addButton');
-  const watchedState = render(initialState, elements, i18nInstance);
-  update(watchedState);
+
+  const view = render(initialState, elements, i18nInstance);
+  update(view);
   elements.formEl.addEventListener('submit', (e) => {
     e.preventDefault();
     const url = elements.inputEl.value;
-    watchedState.formProcess.valid = true;
-    const urls = watchedState.feeds.map((feed) => feed.url);
+    view.formProcess.valid = true;
+    const urls = view.feeds.map((feed) => feed.url);
     validateUrl(url, urls, i18nInstance)
       .then((result) => {
-        watchedState.formProcess.processError = null;
-        watchedState.formProcess.processState = 'sending';
+        view.formProcess.processError = null;
+        view.formProcess.processState = 'sending';
         return getRss(result);
       })
       .then((rss) => {
@@ -95,27 +96,27 @@ export default async () => {
         const feedId = uniqueId();
         const actualFeed = { id: feedId, url, ...feed };
         const actualPosts = posts.map((post) => ({ id: uniqueId(), feedId, ...post }));
-        watchedState.formProcess.processState = 'loaded';
-        watchedState.feeds = [actualFeed, ...watchedState.feeds];
-        watchedState.posts = [...actualPosts, ...watchedState.posts];
+        view.formProcess.processState = 'loaded';
+        view.feeds = [actualFeed, ...view.feeds];
+        view.posts = [...actualPosts, ...view.posts];
       })
       .catch((error) => {
-        watchedState.formProcess.valid = error.name !== 'ValidationError';
+        view.formProcess.valid = error.name !== 'ValidationError';
         if (error.name === 'ValidationError') {
-          watchedState.formProcess.processError = error.message;
+          view.formProcess.processError = error.message;
         } else if (error.message === 'ParseError') {
-          watchedState.formProcess.processError = i18nInstance.t('form.errors.invalidRss');
+          view.formProcess.processError = i18nInstance.t('form.errors.invalidRss');
         } else if (error.name === 'AxiosError') {
-          watchedState.formProcess.processError = 'form.errors.networkProblems';
+          view.formProcess.processError = 'form.errors.networkProblems';
         }
-        watchedState.formProcess.processState = 'filling';
+        view.formProcess.processState = 'filling';
       });
   });
 
   elements.modalWindow.addEventListener('show.bs.modal', (event) => {
     const postId = event.relatedTarget.dataset.id;
     if (initialState.ui.visitedPosts.includes(postId) === false) {
-      watchedState.ui.postId = postId;
+      view.ui.postId = postId;
       initialState.ui.visitedPosts.push(postId);
     }
   });
