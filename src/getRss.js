@@ -1,5 +1,13 @@
 import axios from 'axios';
 
-export default (url) => (
-  axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${url}`)
-);
+const buildUrlWithProxy = (url) => {
+  const urlWithProxy = new URL('/get', 'https://allorigins.hexlet.app');
+  urlWithProxy.searchParams.set('disableCache', 'true');
+  urlWithProxy.searchParams.set('url', url);
+  return urlWithProxy.toString();
+};
+
+export default (url) => {
+  const proxyUrl = buildUrlWithProxy(url);
+  return axios.get(proxyUrl);
+};

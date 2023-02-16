@@ -15,10 +15,7 @@ const validateUrl = async (url, existedUrls) => {
     .url()
     .notOneOf(existedUrls);
 
-  return schema.validate(url)
-    .catch((error) => {
-      throw error;
-    });
+  return schema.validate(url);
 };
 
 export default async () => {
